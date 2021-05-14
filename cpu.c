@@ -157,6 +157,7 @@ int parse_cpu_list(char *cpu_list, cpu_set_t *cpu_set) {
      *       where last equals first, so we will too).
      */
     if (save[0] != '-' || *endptr || last < first) {
+      free(tofree);
       return RETURN_BAD;
     }
 
