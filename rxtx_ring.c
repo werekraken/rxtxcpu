@@ -407,11 +407,10 @@ int rxtx_ring_savefile_open(struct rxtx_ring *p, const char *template) {
   }
 
   status = rxtx_savefile_open(p->savefile, filename, p->errbuf);
+  free(filename);
   if (status == RXTX_ERROR) {
     return RXTX_ERROR;
   }
-
-  free(filename);
 
   return 0;
 }
