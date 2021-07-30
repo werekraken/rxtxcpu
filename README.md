@@ -147,7 +147,7 @@ Bug reports and pull requests are welcome. Please see our [contributing guide](C
 
 Vagrant is used for consistent test environments.
 
-To spin up the CentOS 7 enviroment, build, and run the tests use the following. This will clean up the vm.
+To spin up the CentOS 7 environment, build, and run the tests use the following. This will clean up the vm.
 ```
 ./runner.sh
 ```
