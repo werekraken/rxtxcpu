@@ -1,8 +1,12 @@
-# rxtxcpu
+# rxtxcpu, rxtxnuma, rxtxqueue
 
 rxtxcpu captures packets in per-cpu streams, optionally writing to per-cpu pcap files. On exit, it reports per-cpu packet counts.
 
-rxtxcpu can assist with behavior validation, configuration comparisons, and providing additional data points on packet steering. It also can be used simply for learning purposes across several topics, including the following.
+rxtxnuma captures packets in per-numa streams, optionally writing to per-numa pcap files. On exit, it reports per-numa packet counts.
+
+rxtxqueue captures packets in per-queue streams, optionally writing to per-queue pcap files. On exit, it reports per-queue packet counts.
+
+rxtxcpu, rxtxnuma, and rxtxqueue can assist with behavior validation, configuration comparisons, and providing additional data points on packet steering. They also can be used simply for learning purposes across several topics, including the following.
 * [RSS (Receive-Side Scaling)](Documentation/case-studies/observing-rss-on-ixgbe.md)
   * [Basic RSS Validation](Documentation/case-studies/observing-rss-on-ixgbe-basic-rss-validation.md)
   * [Advanced RSS Configuration](Documentation/case-studies/observing-rss-on-ixgbe-advanced-rss-configuration.md)
@@ -25,6 +29,8 @@ rxtxcpu can assist with behavior validation, configuration comparisons, and prov
 ## Prerequisites
 
 rxtxcpu requires PACKET_FANOUT_CPU (added to the linux kernel in v3.1).
+
+rxtxnuma and rxtxqueue require PACKET_FANOUT_EBPF (added to the linux kernel in v4.3).
 
 ## Installation
 
@@ -50,7 +56,23 @@ Install.
 sudo make install
 ```
 
+### rxtxnuma and rxtxqueue
+
+Build.
+```
+make rxtxnuma
+make rxtxqueue
+```
+
+Install.
+```
+sudo install rxtxnuma rxnuma txnuma /usr/local/sbin/
+sudo install rxtxqueue rxqueue txqueue /usr/local/sbin/
+```
+
 ## Usage
+
+Usage of rxtxcpu, rxtxnuma, and rxtxqueue are intentionally kept very similar. Supply the `--help` argument to a particular util for specifics.
 
 ### Basic usage
 
