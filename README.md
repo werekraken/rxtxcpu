@@ -1,13 +1,27 @@
-# rxtxcpu
+# rxtxcpu, rxtxnuma, rxtxqueue
 
 rxtxcpu captures packets in per-cpu streams, optionally writing to per-cpu pcap files. On exit, it reports per-cpu packet counts.
 
-rxtxcpu can assist with behavior validation, configuration comparisons, and providing additional data points on packet steering. It also can be used simply for learning purposes across several topics, including the following.
-* RSS (Receive-Side Scaling)
+rxtxnuma captures packets in per-numa streams, optionally writing to per-numa pcap files. On exit, it reports per-numa packet counts.
+
+rxtxqueue captures packets in per-queue streams, optionally writing to per-queue pcap files. On exit, it reports per-queue packet counts.
+
+rxtxcpu, rxtxnuma, and rxtxqueue can assist with behavior validation, configuration comparisons, and providing additional data points on packet steering. They also can be used simply for learning purposes across several topics, including the following.
+* [RSS (Receive-Side Scaling)](Documentation/case-studies/observing-rss-on-ixgbe.md)
+  * [Basic RSS Validation](Documentation/case-studies/observing-rss-on-ixgbe-basic-rss-validation.md)
+  * [Advanced RSS Configuration](Documentation/case-studies/observing-rss-on-ixgbe-advanced-rss-configuration.md)
+    * [RSS Hash Fields](Documentation/case-studies/observing-rss-on-ixgbe-advanced-rss-configuration-rss-hash-fields.md)
+    * [RSS Hash Key](Documentation/case-studies/observing-rss-on-ixgbe-advanced-rss-configuration-rss-hash-key.md)
+    * [RSS Hash Indirection Table](Documentation/case-studies/observing-rss-on-ixgbe-advanced-rss-configuration-rss-hash-indirection-table.md)
+    * RSS Hash Algorithm
+  * Programmable RSS
+  * RSS with eBPF (XDP) and CPUMAP
 * RPS (Receive Packet Steering)
 * RFS (Receive Flow Steering)
-* RX Flow Hash Algorithm
-* RX Flow Hash Indirection Table
+* Vendor Flow Steering Solutions
+  * Intel® Flow Director
+    * EP (Externally Programmed)
+    * ATR (Application Targeting Routing)
 * SO_INCOMING_CPU
 * SO_ATTACH_REUSEPORT_CBPF
 * SO_ATTACH_REUSEPORT_EBPF
@@ -15,6 +29,8 @@ rxtxcpu can assist with behavior validation, configuration comparisons, and prov
 ## Prerequisites
 
 rxtxcpu requires PACKET_FANOUT_CPU (added to the linux kernel in v3.1).
+
+rxtxnuma and rxtxqueue require PACKET_FANOUT_EBPF (added to the linux kernel in v4.3).
 
 ## Installation
 
@@ -40,7 +56,23 @@ Install.
 sudo make install
 ```
 
+### rxtxnuma and rxtxqueue
+
+Build.
+```
+make rxtxnuma
+make rxtxqueue
+```
+
+Install.
+```
+sudo install rxtxnuma rxnuma txnuma /usr/local/sbin/
+sudo install rxtxqueue rxqueue txqueue /usr/local/sbin/
+```
+
 ## Usage
+
+Usage of rxtxcpu, rxtxnuma, and rxtxqueue are intentionally kept very similar. Supply the `--help` argument to a particular util for specifics.
 
 ### Basic usage
 
@@ -115,7 +147,7 @@ Bug reports and pull requests are welcome. Please see our [contributing guide](C
 
 Vagrant is used for consistent test environments.
 
-To spin up the CentOS 7 enviroment, build, and run the tests use the following. This will clean up the vm.
+To spin up the CentOS 7 environment, build, and run the tests use the following. This will clean up the vm.
 ```
 ./runner.sh
 ```
