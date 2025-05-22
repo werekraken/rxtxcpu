@@ -4,7 +4,7 @@ This project was initially released at https://github.com/stackpath/rxtxcpu. The
 
 Thankfully, the code is open source and up-to-date forks existed when the original project became inaccessible. Still, it is unfortunate to loose stargazers, watchers, and the full history of pull requests.
 
-Below are the pull requests which happened to have been captured by The Wayback Machine.
+Here are the pull requests which happened to have been captured by The Wayback Machine.
 
 1. https://web.archive.org/web/20201102095412/https://github.com/stackpath/rxtxcpu/pull/1
 2. https://web.archive.org/web/20201102095411/https://github.com/stackpath/rxtxcpu/pull/2
@@ -46,3 +46,5 @@ Below are the pull requests which happened to have been captured by The Wayback 
 38. https://web.archive.org/web/20201102095245/https://github.com/stackpath/rxtxcpu/pull/38
 39. https://web.archive.org/web/20201102095244/https://github.com/stackpath/rxtxcpu/pull/39
 40. https://web.archive.org/web/20201102095229/https://github.com/stackpath/rxtxcpu/pull/40
+
+Here are the merged pull requests which were never captured by The Wayback Machine (nor any other archive/cache known to me presently).
