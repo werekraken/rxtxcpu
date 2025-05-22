@@ -32,3 +32,4 @@ Below are the pull requests which happened to have been captured by The Wayback 
 24. https://web.archive.org/web/20201102095300/https://github.com/stackpath/rxtxcpu/pull/24
 25. https://web.archive.org/web/20201102095259/https://github.com/stackpath/rxtxcpu/pull/25
 26. https://web.archive.org/web/20201102095258/https://github.com/stackpath/rxtxcpu/pull/26
+27. https://web.archive.org/web/20201102095256/https://github.com/stackpath/rxtxcpu/pull/27
