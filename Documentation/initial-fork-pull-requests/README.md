@@ -51,3 +51,4 @@ Here are the merged pull requests which were never captured by The Wayback Machi
 
 41. [https://github.com/stackpath/rxtxcpu/pull/41](PR41.md)
 42. [https://github.com/stackpath/rxtxcpu/pull/42](PR42.md)
+43. [https://github.com/stackpath/rxtxcpu/pull/43](PR43.md)
