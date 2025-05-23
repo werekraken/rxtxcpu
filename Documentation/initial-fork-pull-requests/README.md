@@ -48,3 +48,5 @@ Here are the pull requests which happened to have been captured by The Wayback M
 40. https://web.archive.org/web/20201102095229/https://github.com/stackpath/rxtxcpu/pull/40
 
 Here are the merged pull requests which were never captured by The Wayback Machine (nor any other archive/cache known to me presently).
+
+41. [https://github.com/stackpath/rxtxcpu/pull/41](PR41.md)
