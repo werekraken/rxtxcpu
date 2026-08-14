@@ -12,7 +12,7 @@
 
 #include "cpu.h"
 
-#include <sched.h>  // for CPU_SET(), CPU_ZERO()
+#include <sched.h>  // for CPU_SET(), CPU_SETSIZE, CPU_ZERO()
 #include <stdio.h>  // for fclose(), feof(), fgets(), FILE, fopen()
 #include <stdlib.h> // for free(), strtol()
 #include <string.h> // for strcspn(), strdup(), strlen(), strsep()
@@ -136,6 +136,10 @@ int parse_cpu_list(char *cpu_list, cpu_set_t *cpu_set) {
 
   while ((range = strsep(&string, ",")) != NULL) {
     int first = strtol(range, &endptr, CPU_LIST_BASE);
+    if (first >= CPU_SETSIZE) {
+      free(tofree);
+      return RETURN_BAD;
+    }
     /*
      * When there is no endptr this is a single cpu in the cpu list, not a
      * range.
@@ -147,6 +151,10 @@ int parse_cpu_list(char *cpu_list, cpu_set_t *cpu_set) {
     char *save = endptr;
     endptr++;
     int last = strtol(endptr, &endptr, CPU_LIST_BASE);
+    if (last >= CPU_SETSIZE) {
+      free(tofree);
+      return RETURN_BAD;
+    }
     /*
      * Here we check the following.
      *   1. Ensure save[0] (endptr from the strtol() operation to find first)
@@ -188,17 +196,32 @@ int parse_cpu_mask(char *cpu_mask, cpu_set_t *cpu_set) {
     if (nybble < 0) {
       return RETURN_BAD;
     }
+    /*
+     * Ignore any zeros, including padding.
+     */
+    if (nybble == 0) {
+      nybbles++;
+      continue;
+    }
+
+    int first = nybbles * 4;
+    int last = first + 3;
+
+    if (last >= CPU_SETSIZE) {
+      return RETURN_BAD;
+    }
+
     if (nybble & 0x01) {
-      CPU_SET(0 + (nybbles * 4), cpu_set);
+      CPU_SET(first, cpu_set);
     }
     if (nybble & 0x02) {
-      CPU_SET(1 + (nybbles * 4), cpu_set);
+      CPU_SET(first + 1, cpu_set);
     }
     if (nybble & 0x04) {
-      CPU_SET(2 + (nybbles * 4), cpu_set);
+      CPU_SET(first + 2, cpu_set);
     }
     if (nybble & 0x08) {
-      CPU_SET(3 + (nybbles * 4), cpu_set);
+      CPU_SET(first + 3, cpu_set);
     }
     nybbles++;
   }
