@@ -682,6 +682,10 @@ int rxtx_set_savefile_template(struct rxtx_desc *p, const char *template) {
     return RXTX_ERROR;
   }
 
+  if (p->savefile_template) {
+    free(p->savefile_template);
+  }
+
   if (!template) {
     p->savefile_template = NULL;
   } else {
