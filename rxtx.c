@@ -306,23 +306,27 @@ int rxtx_close(struct rxtx_desc *p) {
   }
   p->ifname = NULL;
 
-  status = rxtx_stats_destroy_with_mutex(p->stats);
-  if (status == RXTX_ERROR) {
-    return RXTX_ERROR;
-  }
-
-  free(p->stats);
-  p->stats = NULL;
-
-  for_each_ring(i, p) {
-    status = rxtx_ring_destroy(&(p->rings[i]));
+  if (p->stats) {
+    status = rxtx_stats_destroy_with_mutex(p->stats);
     if (status == RXTX_ERROR) {
       return RXTX_ERROR;
     }
+
+    free(p->stats);
+    p->stats = NULL;
   }
 
-  free(p->rings);
-  p->rings = NULL;
+  if (p->rings) {
+    for_each_ring(i, p) {
+      status = rxtx_ring_destroy(&(p->rings[i]));
+      if (status == RXTX_ERROR) {
+        return RXTX_ERROR;
+      }
+    }
+
+    free(p->rings);
+    p->rings = NULL;
+  }
 
   p->errbuf = NULL;
 

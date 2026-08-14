@@ -188,9 +188,11 @@ int rxtx_ring_init(struct rxtx_ring *p, struct rxtx_desc *rtd, char *errbuf) {
 int rxtx_ring_destroy(struct rxtx_ring *p) {
   p->fd = 0;
 
-  rxtx_stats_destroy(p->stats);
-  free(p->stats);
-  p->stats = NULL;
+  if (p->stats) {
+    rxtx_stats_destroy(p->stats);
+    free(p->stats);
+    p->stats = NULL;
+  }
 
   p->rtd = NULL;
 

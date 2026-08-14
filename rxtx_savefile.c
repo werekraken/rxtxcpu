@@ -70,23 +70,29 @@ int rxtx_savefile_dump(struct rxtx_savefile *p, struct pcap_pkthdr *header,
 int rxtx_savefile_close(struct rxtx_savefile *p) {
   int status = 0;
 
-  /*
-   * protect against silent write failures
-   */
-  if ((pcap_dump_flush(p->pdd)) == PCAP_ERROR) {
+  if (p->pdd) {
     /*
-     * pcap_dump_flush() only returns PCAP_ERROR when fflush() returns EOF;
-     * errno should be set.
+     * protect against silent write failures
      */
-    rxtx_fill_errbuf(p->errbuf, "error writing to savefile '%s': %s", p->name,
+    if ((pcap_dump_flush(p->pdd)) == PCAP_ERROR) {
+      /*
+       * pcap_dump_flush() only returns PCAP_ERROR when fflush() returns EOF;
+       * errno should be set.
+       */
+      rxtx_fill_errbuf(p->errbuf, "error writing to savefile '%s': %s", p->name,
                                                               strerror(errno));
-    status = RXTX_ERROR;
+      status = RXTX_ERROR;
+    }
+
+    pcap_dump_close(p->pdd);
+    p->pdd = NULL;
   }
 
-  pcap_dump_close(p->pdd);
-  p->pdd = NULL;
-  pcap_close(p->pd);
-  p->pd = NULL;
+  if (p->pd) {
+    pcap_close(p->pd);
+    p->pd = NULL;
+  }
+
   free(p->name);
   p->name = NULL;
   p->errbuf = NULL;
