@@ -306,23 +306,27 @@ int rxtx_close(struct rxtx_desc *p) {
   }
   p->ifname = NULL;
 
-  status = rxtx_stats_destroy_with_mutex(p->stats);
-  if (status == RXTX_ERROR) {
-    return RXTX_ERROR;
-  }
-
-  free(p->stats);
-  p->stats = NULL;
-
-  for_each_ring(i, p) {
-    status = rxtx_ring_destroy(&(p->rings[i]));
+  if (p->stats) {
+    status = rxtx_stats_destroy_with_mutex(p->stats);
     if (status == RXTX_ERROR) {
       return RXTX_ERROR;
     }
+
+    free(p->stats);
+    p->stats = NULL;
   }
 
-  free(p->rings);
-  p->rings = NULL;
+  if (p->rings) {
+    for_each_ring(i, p) {
+      status = rxtx_ring_destroy(&(p->rings[i]));
+      if (status == RXTX_ERROR) {
+        return RXTX_ERROR;
+      }
+    }
+
+    free(p->rings);
+    p->rings = NULL;
+  }
 
   p->errbuf = NULL;
 
@@ -680,6 +684,10 @@ int rxtx_set_savefile_template(struct rxtx_desc *p, const char *template) {
     rxtx_fill_errbuf(p->errbuf, "error setting savefile template: changing"
                 " savefile template on an active descriptor is not permitted");
     return RXTX_ERROR;
+  }
+
+  if (p->savefile_template) {
+    free(p->savefile_template);
   }
 
   if (!template) {

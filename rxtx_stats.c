@@ -57,15 +57,17 @@ int rxtx_stats_mutex_init(struct rxtx_stats *p) {
 
 /* ========================================================================= */
 int rxtx_stats_mutex_destroy(struct rxtx_stats *p) {
-  int status = pthread_mutex_destroy(p->mutex);
-  if (status) {
-    rxtx_fill_errbuf(p->errbuf, "error destroying stats mutex: %s",
+  if (p->mutex) {
+    int status = pthread_mutex_destroy(p->mutex);
+    if (status) {
+      rxtx_fill_errbuf(p->errbuf, "error destroying stats mutex: %s",
                                                              strerror(status));
-    return RXTX_ERROR;
-  }
+      return RXTX_ERROR;
+    }
 
-  free(p->mutex);
-  p->mutex = NULL;
+    free(p->mutex);
+    p->mutex = NULL;
+  }
 
   return 0;
 }
